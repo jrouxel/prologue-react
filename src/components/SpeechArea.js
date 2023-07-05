@@ -1,9 +1,9 @@
 import React from 'react';
 
-const SpeechArea = () => {
+const SpeechArea = ({ finalTranscript, tempTranscript }) => {
   return (
-    <div>User Speech Area</div>
-  )
+    <div>{finalTranscript} {tempTranscript}</div>
+  );
 };
 
 export default SpeechArea;
