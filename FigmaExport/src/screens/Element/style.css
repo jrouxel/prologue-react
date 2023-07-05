@@ -1,0 +1,328 @@
+.element {
+  background-color: #353535;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.element .mobile-wrapper {
+  background-color: #353535;
+  border: 1px none;
+  height: 1400px;
+  overflow: hidden;
+  width: 517px;
+}
+
+.element .mobile {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 16px;
+  position: relative;
+  width: 517px;
+}
+
+.element .fixed-aspect-ratio-2 {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: #4d4d4d;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.element .center-aligned {
+  align-self: stretch;
+  height: 1px;
+  min-width: 485px;
+  position: relative;
+}
+
+.element .wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 485px;
+}
+
+.element .vertical-shift {
+  align-items: flex-start !important;
+  align-self: stretch !important;
+  background-image: unset !important;
+  background-position: unset !important;
+  background-size: unset !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: unset !important;
+  position: relative !important;
+  width: unset !important;
+}
+
+.element .fixed-aspect-ratio-spacer {
+  align-self: stretch !important;
+  left: unset !important;
+  margin-left: -1px !important;
+  margin-right: -1px !important;
+  min-width: 487px !important;
+  top: unset !important;
+  width: unset !important;
+}
+
+.element .center-aligned-px {
+  align-self: stretch;
+  height: 1px;
+  margin-bottom: -1px;
+  min-width: 485px;
+  position: relative;
+}
+
+.element .play-button-small {
+  height: 32px;
+  position: relative;
+  top: -16px;
+  width: 485px;
+}
+
+.element .overlap-group {
+  height: 90px;
+  left: 198px;
+  position: relative;
+  top: -29px;
+  width: 90px;
+}
+
+.element .rectangle {
+  background-color: #cecece;
+  height: 51px;
+  left: 27px;
+  position: absolute;
+  top: 21px;
+  width: 42px;
+}
+
+.element .vector {
+  height: 90px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 90px;
+}
+
+.element .aspect-ratio {
+  align-items: flex-start !important;
+  align-self: stretch !important;
+  background-image: unset !important;
+  background-size: unset !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: unset !important;
+  position: relative !important;
+  width: unset !important;
+}
+
+.element .frame {
+  align-self: stretch;
+  height: 100.57px;
+  min-width: 485px;
+  position: relative;
+}
+
+.element .frame-2 {
+  background-color: #797979;
+  border-radius: 2.39px;
+  height: 25px;
+  left: 0;
+  position: absolute;
+  top: 5px;
+  width: 289px;
+}
+
+.element .frame-3 {
+  background-color: #5a5a5a;
+  border-radius: 2.39px;
+  height: 14px;
+  left: 0;
+  position: absolute;
+  top: 54px;
+  width: 485px;
+}
+
+.element .frame-4 {
+  background-color: #5a5a5a;
+  border-radius: 2.39px;
+  height: 14px;
+  left: 0;
+  position: absolute;
+  top: 86px;
+  width: 485px;
+}
+
+.element .line {
+  align-self: stretch;
+  height: 2px;
+  min-width: 485px;
+  position: relative;
+}
+
+.element .frame-5 {
+  align-self: stretch;
+  height: 71px;
+  min-width: 485px;
+  position: relative;
+}
+
+.element .frame-6 {
+  background-color: #797979;
+  border-radius: 2.39px;
+  height: 14px;
+  left: 77px;
+  position: absolute;
+  top: 15px;
+  width: 123px;
+}
+
+.element .frame-7 {
+  background-color: #6b6b6b;
+  border-radius: 2.39px;
+  height: 14px;
+  left: 77px;
+  position: absolute;
+  top: 40px;
+  width: 64px;
+}
+
+.element .ellipse {
+  background-color: #4d4d4d;
+  border-radius: 26.64px;
+  height: 53px;
+  left: 2px;
+  position: absolute;
+  top: 8px;
+  width: 53px;
+}
+
+.element .overlap {
+  border-radius: 2.39px;
+  height: 40px;
+  left: 385px;
+  position: absolute;
+  top: 16px;
+  width: 100px;
+}
+
+.element .ellipse-2 {
+  background-color: #797979;
+  border-radius: 4.5px;
+  height: 9px;
+  left: 78px;
+  position: absolute;
+  top: 27px;
+  transform: rotate(180deg);
+  width: 9px;
+}
+
+.element .ellipse-3 {
+  background-color: #797979;
+  border-radius: 4.5px;
+  height: 9px;
+  left: 78px;
+  position: absolute;
+  top: 14px;
+  transform: rotate(180deg);
+  width: 9px;
+}
+
+.element .ellipse-4 {
+  background-color: #797979;
+  border-radius: 4.5px;
+  height: 9px;
+  left: 78px;
+  position: absolute;
+  top: 1px;
+  transform: rotate(180deg);
+  width: 9px;
+}
+
+.element .frame-8 {
+  background-color: #ef4c41;
+  border-radius: 2.39px;
+  height: 40px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100px;
+}
+
+.element .frame-9 {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 31px;
+  position: relative;
+}
+
+.element .aspect-ratio-keeper-wrapper {
+  align-items: flex-start;
+  align-self: stretch;
+  background-color: #4d4d4d;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.element .aspect-ratio-keeper-6 {
+  align-self: stretch;
+  height: 2px;
+  margin-left: -1px;
+  margin-right: -1px;
+  min-width: 487px;
+  position: relative;
+  transform: rotate(-34.23deg);
+}
+
+.element .frame-10 {
+  align-self: stretch;
+  height: 56px;
+  min-width: 485px;
+  position: relative;
+}
+
+.element .frame-11 {
+  background-color: #797979;
+  border-radius: 2.39px;
+  height: 14px;
+  left: 0;
+  position: absolute;
+  top: 4px;
+  width: 485px;
+}
+
+.element .frame-12 {
+  background-color: #797979;
+  border-radius: 2.39px;
+  height: 14px;
+  left: 0;
+  position: absolute;
+  top: 36px;
+  width: 485px;
+}
+
+.element .fixed-aspect-ratio-instance {
+  align-items: flex-start !important;
+  align-self: stretch !important;
+  background-color: #4d4d4d !important;
+  background-image: unset !important;
+  background-size: unset !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: unset !important;
+  position: relative !important;
+  width: unset !important;
+}
