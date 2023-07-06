@@ -8,10 +8,16 @@ import Carousel from '../../components/carousel';
 import { startSpeechRecognition, stopSpeechRecognition, cancelSpeechRecognition } from '../../utils/speechToText';
 import RecordButton from '../../components/recordButton';
 import SpeechArea from '../../components/speechArea';
+import { RecordButtonStates } from '../../components/recordButton/constants';
+import store from '../../redux/store';
 
-const App = (props) => {
-    // Redux store state is now available as props
-    const { tempTranscript, finalTranscript, micPermission, recordButtonState } = props;
+const App = ({
+    micPermission, 
+    recordButtonState, 
+    setTempTranscript, 
+    setFinalTranscript, 
+    setRecordButtonState,
+}) => {
 
     return (
         <div>
@@ -21,8 +27,8 @@ const App = (props) => {
             <Carousel />
             <RecordButton 
                 micPermission={micPermission}
-                onStart={startSpeechRecognition(setTempTranscript, setFinalTranscript, setRecordButtonState)} 
-                onStop={stopSpeechRecognition(setRecordButtonState)}
+                onStart={() => startSpeechRecognition()(store.dispatch, store.getState)}
+                onStop={() => stopSpeechRecognition(setRecordButtonState)}
                 onCancel={() => {
                     setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
                     setFinalTranscript('');

@@ -1,21 +1,32 @@
 import { RecordButtonStates } from '../components/recordButton/constants';
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
-import { setTempTranscript, setFinalTranscript, setRecordButtonState } from '../redux/actions';
+import { setTempTranscript, setFinalTranscript, setRecordButtonState} from '../redux/actions';
 import store from '../redux/store';
 
 let recognizer = null;
+let token = null;
 
-export const startSpeechRecognition = () => async() => {
-    // If a recognizer is already running, stop it
-    if (recognizer) {
-        recognizer.stopContinuousRecognitionAsync(() => {});
-        recognizer.dispose();
-        recognizer = null;
-    }
-
+// Define a function to fetch token
+const fetchToken = async () => {
     const response = await fetch('https://crimetrip-backend.azurewebsites.net/azure_chatbot/oauth');
     const data = await response.json();
-    const token = data.token;
+    token = data.token;
+}
+
+// Call it immediately & setup setInterval to fetch it every 10 minutes
+fetchToken();
+setInterval(fetchToken, 1000 * 60 * 10); // 1000ms * 60s * 10m
+
+export const startSpeechRecognition = () => async() => {
+
+    // If a recognizer is already running, stop it
+    if (recognizer) {
+        recognizer.stopContinuousRecognitionAsync(() => {
+          recognizer.dispose();
+          recognizer = null;
+        });
+    }
+    store.dispatch(setRecordButtonState(RecordButtonStates.PROCESSING));
     const serviceRegion = "eastus";
     const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
     speechConfig.speechRecognitionLanguage = "en-US";
@@ -42,7 +53,21 @@ export const startSpeechRecognition = () => async() => {
         }
     };
 
-    recognizer.startContinuousRecognitionAsync(() => store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING)));
+    //recognizer.startContinuousRecognitionAsync(() => store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING)));
+    //wait 0.5 seconds before starting to record
+    
+
+    recognizer.startContinuousRecognitionAsync(() => {
+      console.log(store.getState().bot.recordButtonState)
+      if(store.getState().bot.recordButtonState === RecordButtonStates.PROCESSING){
+        store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING))
+      }else if(store.getState().bot.recordButtonState === RecordButtonStates.RELEASED){
+        console.log("released, so we need to cancel")
+        cancelSpeechRecognition();
+        store.dispatch(setRecordButtonState(RecordButtonStates.READY_TO_RECORD));
+      }
+    });
+
 };
 
 export const stopSpeechRecognition = () => {
@@ -57,6 +82,7 @@ export const stopSpeechRecognition = () => {
 
 export const cancelSpeechRecognition = () => {
   if(recognizer){
+    console.log("canceling")
     recognizer.stopContinuousRecognitionAsync(() => {});
     recognizer.dispose();
     recognizer = null;

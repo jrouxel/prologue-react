@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE } from '../actions';
+import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE} from '../actions';
 
 const INITIAL_STATE = {
   tempTranscript: '',
   finalTranscript: '',
   micPermission: false,
-  recordButtonState: '',
+  recordButtonState: 'Mic Permission Required', // added initial state
 };
 
 const botReducer = (state = INITIAL_STATE, action) => {
