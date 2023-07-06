@@ -1,0 +1,516 @@
+index.js:
+```
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+import App from './containers/app';
+import reportWebVitals from './reportWebVitals';
+
+// 👇️ IMPORTANT: make sure to specify correct ID
+// must be the ID of the div element in your index.html file
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
+
+root.render(  // <---- Applied change here
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+);
+
+reportWebVitals();
+```
+
+reportWebVitals.js:
+```
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+};
+
+export default reportWebVitals;
+
+```
+
+setupTests.js:
+```
+// jest-dom adds custom jest matchers for asserting on DOM nodes.
+// allows you to do things like:
+// expect(element).toHaveTextContent(/react/i)
+// learn more: https://github.com/testing-library/jest-dom
+import '@testing-library/jest-dom';
+
+```
+
+components\audioPlayer\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const AudioPlayer = () => {
+  return (
+    <div>Audio Player Area</div>
+  )
+};
+
+// Here you could map state values to props if needed
+const mapStateToProps = ({ bot }) => ({
+  // your state values here
+})
+
+// Here you could map dispatch actions to props if needed
+const mapDispatchToProps = dispatch => ({
+  // your dispatch actions here
+})
+
+// Then connect your component to the redux store
+export default connect(mapStateToProps, mapDispatchToProps)(AudioPlayer);
+```
+
+components\botResponseArea\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const BotResponseArea = () => {
+  return (
+    <div>Bot Response Area</div>
+  )
+};
+
+// Here you could map state values to props if needed
+const mapStateToProps = ({ bot }) => ({
+  // your state values here
+})
+
+// Here you could map dispatch actions to props if needed
+const mapDispatchToProps = dispatch => ({
+  // your dispatch actions here
+})
+
+// Then connect your component to the redux store
+export default connect(mapStateToProps, mapDispatchToProps)(BotResponseArea);
+```
+
+components\carousel\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const Carousel = () => {
+  return (
+    <div>Carousel Area</div>
+  )
+};
+
+// Here you could map state values to props if needed
+const mapStateToProps = ({ bot }) => ({
+  // your state values here
+})
+
+// Here you could map dispatch actions to props if needed
+const mapDispatchToProps = dispatch => ({
+  // your dispatch actions here
+})
+
+// Then connect your component to the redux store
+export default connect(mapStateToProps, mapDispatchToProps)(Carousel);
+```
+
+components\languageSelection\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const LanguageSelection = () => {
+  return (
+    <div>Select Language:</div>
+  )
+};
+
+// Here you could map state values to props if needed
+const mapStateToProps = ({ bot }) => ({
+  // your state values here
+})
+
+// Here you could map dispatch actions to props if needed
+const mapDispatchToProps = dispatch => ({
+  // your dispatch actions here
+})
+
+// Then connect your component to the redux store
+export default connect(mapStateToProps, mapDispatchToProps)(LanguageSelection);
+```
+
+components\recordButton\constants.js:
+```
+export const RecordButtonStates = {
+    REQUIRED: 'Mic Permission Required',
+    READY_TO_RECORD: 'Ready to Record',
+    RECORDING: 'Recording',
+    READY_TO_SEND: 'Ready to Send'
+};
+```
+
+components\recordButton\index.js:
+```
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { setMicPermission, setRecordButtonState } from '../../redux/actions';
+import { RecordButtonStates } from './constants.js';
+import { buttonStyles, disabledButtonStyles } from './styles.js';
+
+const RecordButton = ({ 
+    micPermission, 
+    recordButtonState, 
+    startSpeechRecognition,
+    stopSpeechRecognition,
+    cancelSpeechRecognition
+}) => {
+    useEffect(() => {
+        navigator.permissions.query({name: 'microphone'}).then(result => setMicPermission(result.state === 'granted'));
+    }, []);
+
+    const requestMicPermission = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            stream.getTracks().forEach(track => track.stop());
+            setMicPermission(true);
+            setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
+        } catch (err) {
+            alert('User needs to approve mic permission.');
+            console.log(err);
+            setMicPermission(false);
+        }
+    };
+
+    const handleRecordButtonClick = () => {
+        if (!micPermission) return requestMicPermission();
+        if (recordButtonState === RecordButtonStates.READY_TO_RECORD) startSpeechRecognition(setTempTranscript, setFinalTranscript, setRecordButtonState);
+    };
+
+    const handleRecordButtonRelease = () => {
+        if (recordButtonState === RecordButtonStates.RECORDING) stopSpeechRecognition(setRecordButtonState);
+    };
+
+    return (
+        <div>
+            <button style={recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles} 
+                    disabled={recordButtonState !== RecordButtonStates.READY_TO_SEND} 
+                    onClick={cancelSpeechRecognition}>
+                Cancel
+            </button>
+            <button style={buttonStyles} 
+                    onMouseDown={handleRecordButtonClick} 
+                    onMouseUp={handleRecordButtonRelease}>
+                {micPermission ? recordButtonState : RecordButtonStates.REQUIRED}
+            </button>
+            <button style={recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles} 
+                    disabled={recordButtonState !== RecordButtonStates.READY_TO_SEND}>
+                Send
+            </button>
+        </div>
+    );
+};
+
+const mapStateToProps = state => ({
+    micPermission: state.bot.micPermission,
+    recordButtonState: state.bot.recordButtonState
+});
+
+const mapDispatchToProps = {
+    setMicPermission,
+    setRecordButtonState
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecordButton);
+```
+
+components\recordButton\styles.js:
+```
+export const buttonStyles = {
+    cursor: 'pointer',
+    margin: '5px',
+    padding: '10px',
+    borderRadius: '5px',
+    backgroundColor: '#008CBA', // Blue
+    color: 'white',
+    fontSize: '16px'
+};
+
+export const disabledButtonStyles = {...buttonStyles, backgroundColor: 'gray', cursor: 'default'};
+```
+
+components\speechArea\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const SpeechArea = ({ finalTranscript, tempTranscript }) => {
+  return (
+    <div>{finalTranscript} {tempTranscript}</div>
+  );
+};
+
+const mapStateToProps = ({ bot }) => ({
+  finalTranscript: bot.finalTranscript,
+  tempTranscript: bot.tempTranscript
+})
+
+export default connect(mapStateToProps)(SpeechArea);
+```
+
+containers\app\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+import { setTempTranscript, setFinalTranscript, setMicPermission, setRecordButtonState } from '../../redux/actions';
+import LanguageSelection from '../../components/languageSelection';
+import BotResponseArea from '../../components/botResponseArea';
+import AudioPlayer from '../../components/audioPlayer';
+import Carousel from '../../components/carousel';
+import { startSpeechRecognition, stopSpeechRecognition, cancelSpeechRecognition } from '../../utils/speechToText';
+import RecordButton from '../../components/recordButton';
+import SpeechArea from '../../components/speechArea';
+
+const App = (props) => {
+    // Redux store state is now available as props
+    const { tempTranscript, finalTranscript, micPermission, recordButtonState } = props;
+
+    return (
+        <div>
+            <LanguageSelection />
+            <BotResponseArea />
+            <AudioPlayer />
+            <Carousel />
+            <RecordButton 
+                micPermission={micPermission}
+                onStart={startSpeechRecognition(setTempTranscript, setFinalTranscript, setRecordButtonState)} 
+                onStop={stopSpeechRecognition(setRecordButtonState)}
+                onCancel={() => {
+                    setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
+                    setFinalTranscript('');
+                    setTempTranscript('');
+                    cancelSpeechRecognition();
+                }}
+                recordButtonState={recordButtonState}
+            />
+            <SpeechArea />
+        </div>
+    );
+};
+
+const mapStateToProps = state => ({
+    tempTranscript: state.bot.tempTranscript,
+    finalTranscript: state.bot.finalTranscript,
+    micPermission: state.bot.micPermission,
+    recordButtonState: state.bot.recordButtonState
+});
+
+const mapDispatchToProps = {
+    setTempTranscript,
+    setFinalTranscript,
+    setMicPermission,
+    setRecordButtonState
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+```
+
+redux\store.js:
+```
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducers'; 
+
+export default configureStore({
+  reducer: rootReducer,
+});
+```
+
+redux\actions\index.js:
+```
+// Define constants
+export const SET_TEMP_TRANSCRIPT = 'SET_TEMP_TRANSCRIPT';
+export const SET_FINAL_TRANSCRIPT = 'SET_FINAL_TRANSCRIPT';
+export const SET_MIC_PERMISSION = 'SET_MIC_PERMISSION';
+export const SET_RECORD_BUTTON_STATE = 'SET_RECORD_BUTTON_STATE';
+
+// Define actions
+export const setTempTranscript = (transcript) => {
+  return {
+    type: SET_TEMP_TRANSCRIPT,
+    payload: transcript
+  }
+}
+
+export const setFinalTranscript = (transcript) => {
+  return {
+    type: SET_FINAL_TRANSCRIPT,
+    payload: transcript
+  }
+}
+
+export const setMicPermission = (isGranted) => {
+  return {
+    type: SET_MIC_PERMISSION,
+    payload: isGranted
+  }
+}
+
+export const setRecordButtonState = (state) => {
+  return {
+    type: SET_RECORD_BUTTON_STATE,
+    payload: state
+  }
+}
+```
+
+redux\reducers\index.js:
+```
+import { combineReducers } from 'redux';
+import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE } from '../actions';
+
+const INITIAL_STATE = {
+  tempTranscript: '',
+  finalTranscript: '',
+  micPermission: false,
+  recordButtonState: '',
+};
+
+const botReducer = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case SET_TEMP_TRANSCRIPT:
+      return {...state, tempTranscript: action.payload}
+    case SET_FINAL_TRANSCRIPT:
+      return {...state, finalTranscript: action.payload}
+    case SET_MIC_PERMISSION:
+      return {...state, micPermission: action.payload}
+    case SET_RECORD_BUTTON_STATE:
+      return {...state, recordButtonState: action.payload}
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+  bot: botReducer,
+});
+```
+
+utils\index.js:
+```
+import { startSpeechRecognition, stopSpeechRecognition, cancelSpeechRecognition } from '../../utils';
+```
+
+utils\speechToText.js:
+```
+import { RecordButtonStates } from '../components/recordButton/constants';
+import * as sdk from "microsoft-cognitiveservices-speech-sdk";
+import { setTempTranscript, setFinalTranscript, setRecordButtonState } from '../redux/actions';
+import store from '../redux/store';
+
+let recognizer = null;
+
+export const startSpeechRecognition = () => async() => {
+    // If a recognizer is already running, stop it
+    if (recognizer) {
+        recognizer.stopContinuousRecognitionAsync(() => {});
+        recognizer.dispose();
+        recognizer = null;
+    }
+
+    const response = await fetch('https://crimetrip-backend.azurewebsites.net/azure_chatbot/oauth');
+    const data = await response.json();
+    const token = data.token;
+    const serviceRegion = "eastus";
+    const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
+    speechConfig.speechRecognitionLanguage = "en-US";
+    const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+
+    // Create new recognizer instance
+    recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+
+    recognizer.recognizing = (s, e) => {
+        if (e.result.reason === sdk.ResultReason.NoMatch) {
+          alert("Squeeze and speak, and release when you have finished")
+        }
+        else if (e.result.reason === sdk.ResultReason.RecognizingSpeech) {
+          store.dispatch(setTempTranscript(e.result.text + '...'));
+        }
+    };
+  
+    recognizer.recognized = (s, e) => {
+        if (e.result.reason === sdk.ResultReason.RecognizingSpeech) {
+            store.dispatch(setFinalTranscript(prevTranscript => `${prevTranscript}${e.result.text}\n`));
+            store.dispatch(setTempTranscript(''));
+        } else if (e.result.reason === sdk.ResultReason.NoMatch) {
+            store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING));
+        }
+    };
+
+    recognizer.startContinuousRecognitionAsync(() => store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING)));
+};
+
+export const stopSpeechRecognition = () => {
+  if (recognizer) {
+    recognizer.stopContinuousRecognitionAsync(() => {
+      store.dispatch(setRecordButtonState(RecordButtonStates.READY_TO_SEND));
+      recognizer.dispose();
+      recognizer = null;
+    });
+  }
+};
+
+export const cancelSpeechRecognition = () => {
+  if(recognizer){
+    recognizer.stopContinuousRecognitionAsync(() => {});
+    recognizer.dispose();
+    recognizer = null;
+  }
+}
+```
+
+Application structure:
+./
+    ├──combine_files.py
+    ├──combined_output.txt
+    ├──index.js
+    ├──logo.svg
+    ├──reportWebVitals.js
+    ├──setupTests.js
+    ├──components/
+        ├──audioPlayer/
+            ├──index.js
+        ├──botResponseArea/
+            ├──index.js
+        ├──carousel/
+            ├──index.js
+        ├──languageSelection/
+            ├──index.js
+        ├──recordButton/
+            ├──constants.js
+            ├──index.js
+            ├──styles.js
+        ├──speechArea/
+            ├──index.js
+    ├──containers/
+        ├──app/
+            ├──index.js
+    ├──redux/
+        ├──store.js
+        ├──actions/
+            ├──index.js
+        ├──reducers/
+            ├──index.js
+    ├──utils/
+        ├──index.js
+        ├──speechToText.js
