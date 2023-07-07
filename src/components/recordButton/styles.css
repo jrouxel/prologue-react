@@ -40,3 +40,6 @@
   position: relative;
   overflow: visible;
 }
+.pressed {
+  filter: brightness(0.6);
+}

@@ -1,11 +1,9 @@
 export const buttonStyles = {
-    cursor: 'pointer',
-    margin: '5px',
-    padding: '10px',
-    borderRadius: '5px',
-    backgroundColor: '#008CBA', // Blue
-    color: 'white',
-    fontSize: '16px'
+    fontSize: '16px',
+    border: 'none',
+    background: 'none',
+    padding: '0px',
+    outline: 'none',
 };
 
-export const disabledButtonStyles = {...buttonStyles, backgroundColor: 'gray', cursor: 'default'};
+export const disabledButtonStyles = {...buttonStyles, display: 'none'};
