@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'; // <--- Added useState impor
 import { connect } from 'react-redux';
 import { setMicPermission, setRecordButtonState } from '../../redux/actions';
 import { RecordButtonStates } from './constants.js';
-import { buttonStyles, disabledButtonStyles } from './styles.js';
+import { buttonStyles, disabledButtonStyles} from './styles.js';
 import store from '../../redux/store';
 import './styles.css';
-import Lottie from "react-lottie";
-import animationData from "./img/lottie_recording.json";
+import Lottie from "lottie-react";
+import lottieRecording from "./img/lottieRecording.json";
 
 const RecordButton = ({ 
     micPermission, 
@@ -19,15 +19,6 @@ const RecordButton = ({
     const [isCancelButtonPressed, setIsCancelButtonPressed] = useState(false);
     const [isRecordButtonPressed, setIsRecordButtonPressed] = useState(false);
     const [isSendButtonPressed, setIsSendButtonPressed] = useState(false);
-    const recordingAnim = {
-        loop: true,
-        autoplay: true,
-        animationData: animationData,
-        rendererSettings: {
-          preserveAspectRatio: "xMidYMid slice"
-        }
-    };
-
 
     useEffect(() => {
         navigator.permissions.query({name: 'microphone'}).then(result => {
@@ -67,7 +58,7 @@ const RecordButton = ({
     };
 
     return (
-    <div class="record-area">
+    <div className="record-area">
         <button
         style={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles}  
         disabled={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND} 
@@ -78,7 +69,7 @@ const RecordButton = ({
         onMouseLeave={() => setIsCancelButtonPressed(false)}
         >
             <svg
-            class="cancel"
+            className="cancel"
             width="32"
             height="32"
             viewBox="0 0 32 32"
@@ -90,8 +81,8 @@ const RecordButton = ({
                 d="M10.6509 11.1117C10.502 10.9628 10.2606 10.9628 10.1117 11.1117C9.96277 11.2606 9.96277 11.502 10.1117 11.6509L14.6583 16.1976L10.1117 20.7442C9.96277 20.8931 9.96277 21.1345 10.1117 21.2834C10.2606 21.4323 10.502 21.4323 10.6509 21.2834L15.1976 16.7368L19.7442 21.2834C19.8931 21.4323 20.1345 21.4323 20.2834 21.2834C20.4323 21.1345 20.4323 20.8931 20.2834 20.7442L15.7368 16.1976L20.2834 11.6509C20.4323 11.502 20.4323 11.2606 20.2834 11.1117C20.1345 10.9628 19.8931 10.9628 19.7442 11.1117L15.1976 15.6583L10.6509 11.1117Z"
                 fill="#414141"
                 stroke="#414141"
-                stroke-width="0.649695"
-                stroke-linecap="round"
+                strokeWidth="0.649695"
+                strokeLinecap="round"
             />
             </svg>
         </button>
@@ -108,30 +99,34 @@ const RecordButton = ({
         }}
         onMouseLeave={() => setIsRecordButtonPressed(false)}
         >
-            <Lottie 
-                options={recordingAnim} 
-                height={95} 
-                width={95}
-            >
+            <div style={{position: 'relative'}}> 
+                <Lottie 
+                animationData={lottieRecording}
+                style={{width: '95px', height: '95px'}}        
+                />
                 <svg
-                class="mic"
+                className="mic"
                 width="95"
-                height="94"
+                height="95"
                 viewBox="0 0 95 94"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                style={{position: 'absolute', top: 0, left: 0}} 
                 >
+                    {/*
                     <circle
                         cx="47.0387"
                         cy="47.0387"
                         r="23.8049"
                         fill="#8645FF"
                         stroke="url(#paint1_linear_863_2056)"
-                        stroke-width="0.467584"
+                        strokeWidth="0.467584"
                     />
+                    */}
+
                     <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
                         d="M46.8672 36C43.2519 36 40.321 38.9308 40.321 42.5462V47.6896C40.321 51.3049 43.2519 54.2358 46.8672 54.2358C50.4826 54.2358 53.4134 51.3049 53.4134 47.6896V42.5462C53.4134 38.9308 50.4826 36 46.8672 36ZM44.2385 42.26C45.3621 41.8012 46.159 41.6051 46.9158 41.6111C47.6733 41.6171 48.4364 41.8258 49.4954 42.2598C49.7343 42.3578 50.0074 42.2435 50.1054 42.0045C50.2033 41.7656 50.089 41.4925 49.8501 41.3945C48.7509 40.944 47.8574 40.6834 46.9232 40.676C45.9884 40.6686 45.0589 40.9149 43.8849 41.3943C43.6459 41.4919 43.5312 41.7649 43.6288 42.004C43.7265 42.243 43.9994 42.3577 44.2385 42.26ZM45.1776 43.9126C45.918 43.6024 46.4257 43.4776 46.8983 43.4814C47.3715 43.4853 47.8572 43.6184 48.5563 43.9124C48.7944 44.0124 49.0685 43.9006 49.1686 43.6626C49.2687 43.4245 49.1568 43.1504 48.9188 43.0503C48.1792 42.7393 47.5604 42.5516 46.9059 42.5463C46.2507 42.5409 45.6074 42.7186 44.8162 43.0501C44.578 43.1499 44.4658 43.4238 44.5656 43.662C44.6654 43.9002 44.9394 44.0124 45.1776 43.9126Z"
                         fill="white"
                     />
@@ -140,7 +135,7 @@ const RecordButton = ({
                         fill="white"
                     />
                 </svg>
-            </Lottie>
+            </div>
         </button>
         <button
         style={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles}  
@@ -151,7 +146,7 @@ const RecordButton = ({
         onMouseLeave={() => setIsSendButtonPressed(false)}
         >
             <svg
-            class="send"
+            className="send"
             width="32"
             height="32"
             viewBox="0 0 32 32"
@@ -160,8 +155,8 @@ const RecordButton = ({
             >
             <circle cx="15.8544" cy="15.778" r="15.0927" stroke="#4C4D58" />
             <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+                fillRule="evenodd"
+                clipRule="evenodd"
                 d="M14.7335 10.4904C15.1403 10.0836 15.7998 10.0836 16.2066 10.4904L20.3733 14.6571C20.7801 15.0639 20.7801 15.7234 20.3733 16.1302C19.9665 16.537 19.3069 16.537 18.9001 16.1302L16.5117 13.7418L16.5117 21.6436C16.5117 22.2189 16.0453 22.6853 15.4701 22.6853C14.8948 22.6853 14.4284 22.2189 14.4284 21.6436L14.4284 13.7418L12.04 16.1302C11.6332 16.537 10.9736 16.537 10.5668 16.1302C10.16 15.7234 10.16 15.0639 10.5668 14.6571L14.7335 10.4904Z"
                 fill="#414040"
             />
