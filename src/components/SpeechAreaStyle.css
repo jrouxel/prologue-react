@@ -1,0 +1,70 @@
+.speech-to-text,
+.speech-to-text * {
+  box-sizing: border-box;
+}
+.speech-to-text {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.speech-to-text2 {
+  text-align: left;
+  font: 500 15.59px "Inter", sans-serif;
+  position: relative;
+  width: 201.41px;
+}
+.speech-to-text-2-span {
+  color: #000000;
+  font: 500 15.59px "Inter", sans-serif;
+}
+.speech-to-text-2-span2 {
+  color: #ffffff;
+  font: 500 15.59px "Inter", sans-serif;
+}
+.speech-to-text-2-span3 {
+  color: #63646a;
+  font: 500 15.59px "Inter", sans-serif;
+}
+:root {
+  /* Colors */
+  --red: #ff453a;
+  --orange: #ff9f0a;
+  --yellow: #ffd60a;
+  --green: #32d74b;
+  --teal: #64d2ff;
+  --blue: #0a84ff;
+  --indigo: #5e5ce6;
+  --purple: #bf5af2;
+  --pink: #ff2d55;
+  --black: #1c1c1e;
+  --gray-1: #2c2c2e;
+  --gray-2: #3a3a3c;
+  --gray-3: #48484a;
+  --gray-4: #636366;
+  --gray-5: #8e8e93;
+  --gray-6: #e5e5ea;
+  --gray-7: #f7f7f7;
+  --white: #ffffff;
+  --i-os-blur-extra-light: rgba(255, 255, 255, 0.5);
+  --i-os-blur-light: rgba(255, 255, 255, 0.33);
+  --i-os-blur-regular: rgba(0, 0, 0, 0.55);
+  --i-os-blur-dark: rgba(0, 0, 0, 0.7);
+  --i-os-blur-system-ultra-thin-material: rgba(57, 57, 57, 0.7);
+  --i-os-blur-system-thin-material: rgba(34, 34, 34, 0.8);
+  --i-os-blur-system-material: rgba(34, 34, 34, 0.9);
+  --i-os-blur-system-thick-material: rgba(5, 5, 5, 0.8);
+
+  /* Fonts */
+
+  /* Effects */
+  --extra-light-backdrop-filter: blur(24px);
+  --light-backdrop-filter: blur(24px);
+  --regular-backdrop-filter: blur(24px);
+  --system-ultra-thin-material-backdrop-filter: blur(16px);
+  --system-thin-material-backdrop-filter: blur(24px);
+  --system-material-backdrop-filter: blur(24px);
+  --system-thick-material-backdrop-filter: blur(24px);
+}
