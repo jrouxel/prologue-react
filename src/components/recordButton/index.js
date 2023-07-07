@@ -70,23 +70,6 @@ const RecordButton = ({
                 disabled={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND}>
                 Send
             </button>
-            <button className="mainpage-record-button">
-                <img
-                    src="/external/send8632-4698.svg"
-                    alt="send8632"
-                    className="mainpage-send"
-                />
-                <img
-                    src="/external/mic8632-14b.svg"
-                    alt="mic8632"
-                    className="mainpage-mic"
-                />
-                <img
-                    src="/external/cancel8632-zgrb.svg"
-                    alt="cancel8632"
-                    className="mainpage-cancel"
-                />
-            </button>
         </div>
     );
 };
