@@ -1,0 +1,42 @@
+.record-area,
+.record-area * {
+  box-sizing: border-box;
+}
+.record-area {
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.send {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.mic {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+.cancel {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
