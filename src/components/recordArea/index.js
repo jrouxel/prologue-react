@@ -9,7 +9,7 @@ import Lottie from "lottie-react";
 import lottieRecording from "./img/lottieRecording.json";
 import lottieElypsis from "./img/lottieElypsis.json";
 import lottieMicPermission from "./img/micPermission.json";
-
+import logo from './img/record-video-animation.gif'
 
 const RecordArea = ({ 
     micPermission, 
@@ -104,44 +104,44 @@ const RecordArea = ({
         >
             <div //Microphone Permission State animation
                 style={store.getState().bot.recordButtonState === RecordButtonStates.REQUIRED ? recordButtonStyles : disabledButtonStyles}
-            > 
-                <svg
+            >
+                
+                <img 
+                src={logo} 
+                alt="loading..." 
                 className="mic"
-                width="95"
-                height="95"
-                viewBox="0 0 95 94"
+                width="65"
+                height="65"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                >
-                    <circle
-                        cx="47.0387"
-                        cy="47.0387"
-                        r="23.8049"
-                        fill="#8645FF"
-                        stroke="url(#paint1_linear_863_2056)"
-                        strokeWidth="0.467584"
-                    />
-                </svg>
+                />
                 <Lottie 
                 animationData={lottieMicPermission}
-                style={{position: 'absolute', width: '35px', height: '35px', top: 33, left: 30}}        
+                style={{position: 'absolute', width: '35px', height: '35px', top: 20, left: 15}}        
                 />
             </div>
             <div //Recording State animation
                 style={store.getState().bot.recordButtonState === RecordButtonStates.RECORDING ? recordButtonStyles : disabledButtonStyles}
             > 
-                <Lottie 
-                animationData={lottieRecording}
-                style={{width: '95px', height: '95px'}}        
+                <img 
+                src={logo} 
+                alt="loading..." 
+                className='mic'
+                style={{width: '110px', height: '110px', alignSelf: 'center', marginBottom: '-10px'}}
                 />
-                <svg
-                className="mic"
+                <img 
+                src={logo} 
+                alt="loading..." 
+                className='mic'
                 width="95"
                 height="95"
-                viewBox="0 0 95 94"
+                style={{position: 'absolute', top: -12, right: -16.5}}
+                />
+                <svg
+                width="95"
+                height="95"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                style={{position: 'absolute', top: 0, left: 0}} 
+                style={{position: 'absolute', top: -12, right: -16.5}}
                 >
                     <path
                         fillRule="evenodd"
@@ -163,22 +163,19 @@ const RecordArea = ({
                     store.getState().bot.recordButtonState === RecordButtonStates.RELEASED 
                 )? recordButtonStyles : disabledButtonStyles}
             > 
+                <img 
+                src={logo} 
+                alt="loading..." 
+                className='mic'
+                style={{width: '65px', height: '65px', alignSelf: 'center', marginBottom: '15px'}}
+                />
                 <svg
-                className="mic"
                 width="95"
                 height="95"
-                viewBox="0 0 95 95"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                style={{position: 'absolute', top: -12, right: -16.5}}
                 >
-                    <circle
-                        cx="47.0387"
-                        cy="47.0387"
-                        r="23.8049"
-                        fill="#8645FF"
-                        stroke="url(#paint1_linear_863_2056)"
-                        strokeWidth="0.467584"
-                    />
                     <path
                         fillRule="evenodd"
                         clipRule="evenodd"
@@ -194,26 +191,15 @@ const RecordArea = ({
             <div //Ready to Send State animation
                 style={store.getState().bot.recordButtonState === RecordButtonStates.READY_TO_SEND ? recordButtonStyles : disabledButtonStyles}
             > 
-                <svg
-                className="mic"
-                width="95"
-                height="95"
-                viewBox="0 0 95 94"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                >
-                    <circle
-                        cx="47.0387"
-                        cy="47.0387"
-                        r="23.8049"
-                        fill="#8645FF"
-                        stroke="url(#paint1_linear_863_2056)"
-                        strokeWidth="0.467584"
-                    />
-                </svg>
+                <img 
+                src={logo} 
+                alt="loading..." 
+                className='mic'
+                style={{width: '65px', height: '65px', alignSelf: 'center', marginBottom: '15px'}}
+                />
                 <Lottie 
                 animationData={lottieElypsis}
-                style={{position: 'absolute', width: '70px', height: '70px', top: 15, left: 12.5}}        
+                style={{position: 'absolute', width: '70px', height: '70px', top: 0, left: -2}}        
                 />
             </div>
         </button>
