@@ -6,7 +6,6 @@ import { buttonStyles, disabledButtonStyles, recordButtonStyles} from './styles.
 import store from '../../redux/store';
 import './styles.css';
 import Lottie from "lottie-react";
-import lottieRecording from "./img/lottieRecording.json";
 import lottieElypsis from "./img/lottieElypsis.json";
 import lottieMicPermission from "./img/micPermission.json";
 import logo from './img/record-video-animation.gif'
@@ -91,7 +90,7 @@ const RecordArea = ({
         </button>
         <button //Record Button
         style={buttonStyles} 
-        className={isRecordButtonPressed ? 'pressed' : ''}
+        className={isRecordButtonPressed ? '' : ''}
         onMouseDown={() => {
             setIsRecordButtonPressed(true)
             handleRecordButtonClick()
@@ -132,16 +131,24 @@ const RecordArea = ({
                 src={logo} 
                 alt="loading..." 
                 className='mic'
-                width="95"
-                height="95"
-                style={{position: 'absolute', top: -12, right: -16.5}}
+                width="90"
+                height="90"
+                style={{position: 'absolute', top: 10, right: 10}}
+                />
+                <img 
+                src={logo} 
+                alt="loading..." 
+                className='mic'
+                width="70"
+                height="70"
+                style={{position: 'absolute', top: 20, right: 20}}
                 />
                 <svg
                 width="95"
                 height="95"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                style={{position: 'absolute', top: -12, right: -16.5}}
+                style={{position: 'absolute', top: 7.5, right: 6.25}}
                 >
                     <path
                         fillRule="evenodd"

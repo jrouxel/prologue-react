@@ -31,9 +31,23 @@ const App = ({
             style={{position: 'fixed', top: '15%', left: '50%', transform: 'translateX(-50%)'}} >
                 <BotResponseArea />
             </div>            
-            <div //Record button 
-            style={{position: 'fixed', bottom: '40%', left: '50%', transform: 'translateX(-50%)'}} >
-                <Carousel />
+           
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh', // Adjust this value as required
+            }}>
+                <div style={{
+                    width: '300px',
+                    height: '150px',
+                    background: '#f9f9f9',  // or any color that you want for the background
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Carousel />
+                </div>
             </div>
             <div //Speech Area
             style={{position: 'fixed', bottom: '25%', left: '50%', transform: 'translateX(-50%)'}} >
@@ -55,7 +69,7 @@ const App = ({
                         recordButtonState={recordButtonState}
                 /> 
             </div>
-            <div //Record button 
+            <div //Language Selection 
             style={{position: 'fixed', bottom: '10px', left: '50%', transform: 'translateX(-50%)'}} >
                 <Footer />
                 <LanguageSelection />
