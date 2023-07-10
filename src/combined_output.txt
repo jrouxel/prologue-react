@@ -126,6 +126,56 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Carousel);
 ```
 
+components\footer\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const Footer = () => {
+  return (
+    <div>Footer Area</div>
+  )
+};
+
+// Here you could map state values to props if needed
+const mapStateToProps = ({ bot }) => ({
+  // your state values here
+})
+
+// Here you could map dispatch actions to props if needed
+const mapDispatchToProps = dispatch => ({
+  // your dispatch actions here
+})
+
+// Then connect your component to the redux store
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);
+```
+
+components\header\index.js:
+```
+import React from 'react';
+import { connect } from 'react-redux';
+
+const Header = () => {
+  return (
+    <div>Header Area</div>
+  )
+};
+
+// Here you could map state values to props if needed
+const mapStateToProps = ({ bot }) => ({
+  // your state values here
+})
+
+// Here you could map dispatch actions to props if needed
+const mapDispatchToProps = dispatch => ({
+  // your dispatch actions here
+})
+
+// Then connect your component to the redux store
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
+```
+
 components\languageSelection\index.js:
 ```
 import React from 'react';
@@ -156,7 +206,9 @@ components\recordButton\constants.js:
 export const RecordButtonStates = {
     REQUIRED: 'Mic Permission Required',
     READY_TO_RECORD: 'Ready to Record',
+    PROCESSING: 'Processing',
     RECORDING: 'Recording',
+    RELEASED: 'Released',
     READY_TO_SEND: 'Ready to Send'
 };
 ```
@@ -167,24 +219,30 @@ import React, { useEffect, useState } from 'react'; // <--- Added useState impor
 import { connect } from 'react-redux';
 import { setMicPermission, setRecordButtonState } from '../../redux/actions';
 import { RecordButtonStates } from './constants.js';
-import { buttonStyles, disabledButtonStyles } from './styles.js';
+import { buttonStyles, disabledButtonStyles, recordButtonStyles} from './styles.js';
+import store from '../../redux/store';
+import './styles.css';
+import Lottie from "lottie-react";
+import lottieRecording from "./img/lottieRecording.json";
+import lottieElypsis from "./img/lottieElypsis.json";
 
 const RecordButton = ({ 
     micPermission, 
-    recordButtonState, 
     setMicPermission,
-    setRecordButtonState,  
     onStart, // changed
     onStop, // changed
     onCancel // changed
 }) => {
     const [isLoading, setIsLoading] = useState(false); // <--- Added useState for isLoading
+    const [isCancelButtonPressed, setIsCancelButtonPressed] = useState(false);
+    const [isRecordButtonPressed, setIsRecordButtonPressed] = useState(false);
+    const [isSendButtonPressed, setIsSendButtonPressed] = useState(false);
 
     useEffect(() => {
         navigator.permissions.query({name: 'microphone'}).then(result => {
             setMicPermission(result.state === 'granted');
             if(result.state === 'granted'){
-                setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
+                store.dispatch(setRecordButtonState(RecordButtonStates.READY_TO_RECORD));
             }
         });
     }, [setMicPermission]);
@@ -195,7 +253,7 @@ const RecordButton = ({
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             stream.getTracks().forEach(track => track.stop());
             setMicPermission(true);
-            setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
+            store.dispatch(setRecordButtonState(RecordButtonStates.READY_TO_RECORD));
             setIsLoading(false);
         } catch (err) {
             alert('User needs to approve mic permission.');
@@ -206,37 +264,175 @@ const RecordButton = ({
     };
 
     const handleRecordButtonClick = () => {
-        if (recordButtonState === RecordButtonStates.READY_TO_RECORD && !isLoading && !micPermission) return requestMicPermission();
-        else if(recordButtonState === RecordButtonStates.READY_TO_RECORD && !isLoading) return onStart();
+        if (!micPermission) return requestMicPermission();
+        else if(store.getState().bot.recordButtonState === RecordButtonStates.READY_TO_RECORD && !isLoading) return onStart();
     };
 
     const handleRecordButtonRelease = () => {
-        if (recordButtonState === RecordButtonStates.RECORDING && !isLoading) onStop(); 
-        else{
-            console.log('Record button was released before recording started.');
+        if (store.getState().bot.recordButtonState === RecordButtonStates.RECORDING && !isLoading) onStop(); 
+        else if (store.getState().bot.recordButtonState === RecordButtonStates.PROCESSING){
+            store.dispatch(setRecordButtonState(RecordButtonStates.RELEASED));
         }
     };
 
     return (
-        <div>
-            <button 
-                style={recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles} 
-                disabled={recordButtonState !== RecordButtonStates.READY_TO_SEND} 
-                onClick={onCancel}>
-                Cancel
-            </button>
-            <button 
-                style={buttonStyles} 
-                onMouseDown={handleRecordButtonClick} 
-                onMouseUp={handleRecordButtonRelease}>
-                { micPermission ? (isLoading ? 'Loading...' : recordButtonState) : RecordButtonStates.REQUIRED }
-            </button>
-            <button 
-                style={recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles} 
-                disabled={recordButtonState !== RecordButtonStates.READY_TO_SEND}>
-                Send
-            </button>
-        </div>
+    <div className="record-area">
+        <button //Cancel Button        
+        style={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles}  
+        disabled={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND} 
+        onClick={onCancel}  
+        className={isCancelButtonPressed ? 'pressed' : ''}
+        onMouseDown={() => setIsCancelButtonPressed(true)}
+        onMouseUp={() => setIsCancelButtonPressed(false)}
+        onMouseLeave={() => setIsCancelButtonPressed(false)}
+        >
+            <svg
+            className="cancel"
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <circle cx="15.5956" cy="15.778" r="15.0927" stroke="#4C4D58" />
+            <path
+                d="M10.6509 11.1117C10.502 10.9628 10.2606 10.9628 10.1117 11.1117C9.96277 11.2606 9.96277 11.502 10.1117 11.6509L14.6583 16.1976L10.1117 20.7442C9.96277 20.8931 9.96277 21.1345 10.1117 21.2834C10.2606 21.4323 10.502 21.4323 10.6509 21.2834L15.1976 16.7368L19.7442 21.2834C19.8931 21.4323 20.1345 21.4323 20.2834 21.2834C20.4323 21.1345 20.4323 20.8931 20.2834 20.7442L15.7368 16.1976L20.2834 11.6509C20.4323 11.502 20.4323 11.2606 20.2834 11.1117C20.1345 10.9628 19.8931 10.9628 19.7442 11.1117L15.1976 15.6583L10.6509 11.1117Z"
+                fill="#414141"
+                stroke="#414141"
+                strokeWidth="0.649695"
+                strokeLinecap="round"
+            />
+            </svg>
+        </button>
+        <button //Record Button
+        style={buttonStyles} 
+        className={isRecordButtonPressed ? 'pressed' : ''}
+        onMouseDown={() => {
+            setIsRecordButtonPressed(true)
+            handleRecordButtonClick()
+        }}
+        onMouseUp={() => {
+            setIsRecordButtonPressed(false)
+            handleRecordButtonRelease()
+        }}
+        onMouseLeave={() => setIsRecordButtonPressed(false)}
+        >
+            <div //Recording State animation
+                style={store.getState().bot.recordButtonState === RecordButtonStates.RECORDING ? recordButtonStyles : disabledButtonStyles}
+            > 
+                <Lottie 
+                animationData={lottieRecording}
+                style={{width: '95px', height: '95px'}}        
+                />
+                <svg
+                className="mic"
+                width="95"
+                height="95"
+                viewBox="0 0 95 94"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{position: 'absolute', top: 0, left: 0}} 
+                >
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M46.8672 36C43.2519 36 40.321 38.9308 40.321 42.5462V47.6896C40.321 51.3049 43.2519 54.2358 46.8672 54.2358C50.4826 54.2358 53.4134 51.3049 53.4134 47.6896V42.5462C53.4134 38.9308 50.4826 36 46.8672 36ZM44.2385 42.26C45.3621 41.8012 46.159 41.6051 46.9158 41.6111C47.6733 41.6171 48.4364 41.8258 49.4954 42.2598C49.7343 42.3578 50.0074 42.2435 50.1054 42.0045C50.2033 41.7656 50.089 41.4925 49.8501 41.3945C48.7509 40.944 47.8574 40.6834 46.9232 40.676C45.9884 40.6686 45.0589 40.9149 43.8849 41.3943C43.6459 41.4919 43.5312 41.7649 43.6288 42.004C43.7265 42.243 43.9994 42.3577 44.2385 42.26ZM45.1776 43.9126C45.918 43.6024 46.4257 43.4776 46.8983 43.4814C47.3715 43.4853 47.8572 43.6184 48.5563 43.9124C48.7944 44.0124 49.0685 43.9006 49.1686 43.6626C49.2687 43.4245 49.1568 43.1504 48.9188 43.0503C48.1792 42.7393 47.5604 42.5516 46.9059 42.5463C46.2507 42.5409 45.6074 42.7186 44.8162 43.0501C44.578 43.1499 44.4658 43.4238 44.5656 43.662C44.6654 43.9002 44.9394 44.0124 45.1776 43.9126Z"
+                        fill="white"
+                    />
+                    <path
+                        d="M56.6847 44.3665C56.6571 43.9802 56.3215 43.6893 55.9351 43.7169C55.5488 43.7445 55.2579 44.0801 55.2855 44.4665C55.5671 48.409 54.5367 51.2857 52.9311 53.1667C51.3224 55.0513 49.0942 55.9892 46.8672 55.9892C44.6402 55.9892 42.412 55.0513 40.8034 53.1667C39.1978 51.2857 38.1673 48.409 38.4489 44.4665C38.4765 44.0801 38.1857 43.7445 37.7993 43.7169C37.4129 43.6893 37.0773 43.9802 37.0497 44.3665C36.7469 48.6067 37.8498 51.8671 39.7364 54.0774C41.6201 56.2842 44.243 57.3919 46.8672 57.3919C49.4914 57.3919 52.1144 56.2842 53.998 54.0774C55.8847 51.8671 56.9876 48.6067 56.6847 44.3665Z"
+                        fill="white"
+                    />
+                </svg>
+            </div>
+            <div // Ready to Record State animation
+            style={
+                (
+                    store.getState().bot.recordButtonState === RecordButtonStates.READY_TO_RECORD ||
+                    store.getState().bot.recordButtonState === RecordButtonStates.PROCESSING ||
+                    store.getState().bot.recordButtonState === RecordButtonStates.RELEASED 
+                )? recordButtonStyles : disabledButtonStyles}
+            > 
+                <svg
+                className="mic"
+                width="95"
+                height="95"
+                viewBox="0 0 95 94"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle
+                        cx="47.0387"
+                        cy="47.0387"
+                        r="23.8049"
+                        fill="#8645FF"
+                        stroke="url(#paint1_linear_863_2056)"
+                        strokeWidth="0.467584"
+                    />
+                    <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M46.8672 36C43.2519 36 40.321 38.9308 40.321 42.5462V47.6896C40.321 51.3049 43.2519 54.2358 46.8672 54.2358C50.4826 54.2358 53.4134 51.3049 53.4134 47.6896V42.5462C53.4134 38.9308 50.4826 36 46.8672 36ZM44.2385 42.26C45.3621 41.8012 46.159 41.6051 46.9158 41.6111C47.6733 41.6171 48.4364 41.8258 49.4954 42.2598C49.7343 42.3578 50.0074 42.2435 50.1054 42.0045C50.2033 41.7656 50.089 41.4925 49.8501 41.3945C48.7509 40.944 47.8574 40.6834 46.9232 40.676C45.9884 40.6686 45.0589 40.9149 43.8849 41.3943C43.6459 41.4919 43.5312 41.7649 43.6288 42.004C43.7265 42.243 43.9994 42.3577 44.2385 42.26ZM45.1776 43.9126C45.918 43.6024 46.4257 43.4776 46.8983 43.4814C47.3715 43.4853 47.8572 43.6184 48.5563 43.9124C48.7944 44.0124 49.0685 43.9006 49.1686 43.6626C49.2687 43.4245 49.1568 43.1504 48.9188 43.0503C48.1792 42.7393 47.5604 42.5516 46.9059 42.5463C46.2507 42.5409 45.6074 42.7186 44.8162 43.0501C44.578 43.1499 44.4658 43.4238 44.5656 43.662C44.6654 43.9002 44.9394 44.0124 45.1776 43.9126Z"
+                        fill="white"
+                    />
+                    <path
+                        d="M56.6847 44.3665C56.6571 43.9802 56.3215 43.6893 55.9351 43.7169C55.5488 43.7445 55.2579 44.0801 55.2855 44.4665C55.5671 48.409 54.5367 51.2857 52.9311 53.1667C51.3224 55.0513 49.0942 55.9892 46.8672 55.9892C44.6402 55.9892 42.412 55.0513 40.8034 53.1667C39.1978 51.2857 38.1673 48.409 38.4489 44.4665C38.4765 44.0801 38.1857 43.7445 37.7993 43.7169C37.4129 43.6893 37.0773 43.9802 37.0497 44.3665C36.7469 48.6067 37.8498 51.8671 39.7364 54.0774C41.6201 56.2842 44.243 57.3919 46.8672 57.3919C49.4914 57.3919 52.1144 56.2842 53.998 54.0774C55.8847 51.8671 56.9876 48.6067 56.6847 44.3665Z"
+                        fill="white"
+                    />
+                </svg>
+            </div>
+            <div //Ready to Send State animation
+                style={store.getState().bot.recordButtonState === RecordButtonStates.READY_TO_SEND ? recordButtonStyles : disabledButtonStyles}
+            > 
+                <svg
+                className="mic"
+                width="95"
+                height="95"
+                viewBox="0 0 95 94"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle
+                        cx="47.0387"
+                        cy="47.0387"
+                        r="23.8049"
+                        fill="#8645FF"
+                        stroke="url(#paint1_linear_863_2056)"
+                        strokeWidth="0.467584"
+                    />
+                </svg>
+                <Lottie 
+                animationData={lottieElypsis}
+                style={{position: 'absolute', width: '95px', height: '95px', top: 0, left: 0}}        
+                />
+            </div>
+        </button>
+        <button // Send Button
+        style={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND ? disabledButtonStyles : buttonStyles}  
+        disabled={store.getState().bot.recordButtonState !== RecordButtonStates.READY_TO_SEND} 
+        className={isSendButtonPressed ? 'pressed' : ''}
+        onMouseDown={() => setIsSendButtonPressed(true)}
+        onMouseUp={() => setIsSendButtonPressed(false)}
+        onMouseLeave={() => setIsSendButtonPressed(false)}
+        >
+            <svg
+            className="send"
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            >
+            <circle cx="15.8544" cy="15.778" r="15.0927" stroke="#4C4D58" />
+            <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M14.7335 10.4904C15.1403 10.0836 15.7998 10.0836 16.2066 10.4904L20.3733 14.6571C20.7801 15.0639 20.7801 15.7234 20.3733 16.1302C19.9665 16.537 19.3069 16.537 18.9001 16.1302L16.5117 13.7418L16.5117 21.6436C16.5117 22.2189 16.0453 22.6853 15.4701 22.6853C14.8948 22.6853 14.4284 22.2189 14.4284 21.6436L14.4284 13.7418L12.04 16.1302C11.6332 16.537 10.9736 16.537 10.5668 16.1302C10.16 15.7234 10.16 15.0639 10.5668 14.6571L14.7335 10.4904Z"
+                fill="#414040"
+            />
+            </svg>
+        </button>
+    </div>
     );
 };
 
@@ -256,16 +452,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(RecordButton);
 components\recordButton\styles.js:
 ```
 export const buttonStyles = {
-    cursor: 'pointer',
-    margin: '5px',
-    padding: '10px',
-    borderRadius: '5px',
-    backgroundColor: '#008CBA', // Blue
-    color: 'white',
-    fontSize: '16px'
+    fontSize: '16px',
+    border: 'none',
+    background: 'none',
+    padding: '0px',
+    outline: 'none',
 };
 
-export const disabledButtonStyles = {...buttonStyles, backgroundColor: 'gray', cursor: 'default'};
+export const disabledButtonStyles = {...buttonStyles, display: 'none'};
+
+
+export const recordButtonStyles = {
+    position: 'relative'
+};
 ```
 
 components\speechArea\index.js:
@@ -307,7 +506,7 @@ const App = ({
     recordButtonState, 
     setTempTranscript, 
     setFinalTranscript, 
-    setRecordButtonState 
+    setRecordButtonState,
 }) => {
 
     return (
@@ -316,7 +515,10 @@ const App = ({
             <BotResponseArea />
             <AudioPlayer />
             <Carousel />
+            <SpeechArea />
             <RecordButton 
+                //anchor to the center bottom of the screen
+                style={{position: 'fixed', bottom: '0', left: '50%', transform: 'translate(-50%, -50%)'}}
                 micPermission={micPermission}
                 onStart={() => startSpeechRecognition()(store.dispatch, store.getState)}
                 onStop={() => stopSpeechRecognition(setRecordButtonState)}
@@ -328,7 +530,6 @@ const App = ({
                 }}
                 recordButtonState={recordButtonState}
             />
-            <SpeechArea />
         </div>
     );
 };
@@ -401,7 +602,7 @@ export const setRecordButtonState = (state) => {
 redux\reducers\index.js:
 ```
 import { combineReducers } from 'redux';
-import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE } from '../actions';
+import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE} from '../actions';
 
 const INITIAL_STATE = {
   tempTranscript: '',
@@ -439,22 +640,33 @@ utils\speechToText.js:
 ```
 import { RecordButtonStates } from '../components/recordButton/constants';
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
-import { setTempTranscript, setFinalTranscript, setRecordButtonState } from '../redux/actions';
+import { setTempTranscript, setFinalTranscript, setRecordButtonState} from '../redux/actions';
 import store from '../redux/store';
 
 let recognizer = null;
+let token = null;
 
-export const startSpeechRecognition = () => async() => {
-    // If a recognizer is already running, stop it
-    if (recognizer) {
-        recognizer.stopContinuousRecognitionAsync(() => {});
-        recognizer.dispose();
-        recognizer = null;
-    }
-
+// Define a function to fetch token
+const fetchToken = async () => {
     const response = await fetch('https://crimetrip-backend.azurewebsites.net/azure_chatbot/oauth');
     const data = await response.json();
-    const token = data.token;
+    token = data.token;
+}
+
+// Call it immediately & setup setInterval to fetch it every 10 minutes
+fetchToken();
+setInterval(fetchToken, 1000 * 60 * 10); // 1000ms * 60s * 10m
+
+export const startSpeechRecognition = () => async() => {
+
+    // If a recognizer is already running, stop it
+    if (recognizer) {
+        recognizer.stopContinuousRecognitionAsync(() => {
+          recognizer.dispose();
+          recognizer = null;
+        });
+    }
+    store.dispatch(setRecordButtonState(RecordButtonStates.PROCESSING));
     const serviceRegion = "eastus";
     const speechConfig = sdk.SpeechConfig.fromAuthorizationToken(token, serviceRegion);
     speechConfig.speechRecognitionLanguage = "en-US";
@@ -481,7 +693,21 @@ export const startSpeechRecognition = () => async() => {
         }
     };
 
-    recognizer.startContinuousRecognitionAsync(() => store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING)));
+    //recognizer.startContinuousRecognitionAsync(() => store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING)));
+    //wait 0.5 seconds before starting to record
+    
+
+    recognizer.startContinuousRecognitionAsync(() => {
+      console.log(store.getState().bot.recordButtonState)
+      if(store.getState().bot.recordButtonState === RecordButtonStates.PROCESSING){
+        store.dispatch(setRecordButtonState(RecordButtonStates.RECORDING))
+      }else if(store.getState().bot.recordButtonState === RecordButtonStates.RELEASED){
+        console.log("released, so we need to cancel")
+        cancelSpeechRecognition();
+        store.dispatch(setRecordButtonState(RecordButtonStates.READY_TO_RECORD));
+      }
+    });
+
 };
 
 export const stopSpeechRecognition = () => {
@@ -496,6 +722,7 @@ export const stopSpeechRecognition = () => {
 
 export const cancelSpeechRecognition = () => {
   if(recognizer){
+    console.log("canceling")
     recognizer.stopContinuousRecognitionAsync(() => {});
     recognizer.dispose();
     recognizer = null;
@@ -518,12 +745,28 @@ Application structure:
             ├──index.js
         ├──carousel/
             ├──index.js
+        ├──footer/
+            ├──index.js
+            ├──styles.css
+        ├──header/
+            ├──index.js
+            ├──styles.css
         ├──languageSelection/
             ├──index.js
         ├──recordButton/
             ├──constants.js
             ├──index.js
+            ├──styles.css
             ├──styles.js
+            ├──img/
+                ├──cancel.svg
+                ├──lottieElypsis.json
+                ├──lottieRecording.json
+                ├──mic.svg
+                ├──mic_ellipse.svg
+                ├──send.svg
+            ├──temp/
+                ├──index.html
         ├──speechArea/
             ├──index.js
     ├──containers/

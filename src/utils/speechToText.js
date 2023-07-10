@@ -1,4 +1,4 @@
-import { RecordButtonStates } from '../components/recordButton/constants';
+import { RecordButtonStates } from '../components/recordArea/constants';
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 import { setTempTranscript, setFinalTranscript, setRecordButtonState} from '../redux/actions';
 import store from '../redux/store';

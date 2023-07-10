@@ -51,7 +51,7 @@ with open(output_filename, "w", encoding="utf-8") as output_file:
         for file in files:
             file_path = os.path.join(root, file)
             relative_file_path = os.path.relpath(file_path, start=".")
-            if (file.endswith(".js") or file.endswith("requirements.txt")) or file.endswith(".json") and not is_gitignored(relative_file_path, ignored_patterns):
+            if (file.endswith(".js") or file.endswith("requirements.txt")) and not is_gitignored(relative_file_path, ignored_patterns):
                 output_file.write(f"{relative_file_path}:\n")
                 process_file(file_path, output_file)
 
