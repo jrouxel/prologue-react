@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
-import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE} from '../actions';
+import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE, SET_CAROUSEL_STATE} from '../actions';
 
 const INITIAL_STATE = {
   tempTranscript: '',
   finalTranscript: '',
   micPermission: false,
   recordButtonState: 'Mic Permission Required', // added initial state
+  carouselState: 0
 };
 
 const botReducer = (state = INITIAL_STATE, action) => {
@@ -18,6 +19,8 @@ const botReducer = (state = INITIAL_STATE, action) => {
       return {...state, micPermission: action.payload}
     case SET_RECORD_BUTTON_STATE:
       return {...state, recordButtonState: action.payload}
+    case SET_CAROUSEL_STATE:
+      return {...state, carouselState: action.payload}
     default:
       return state;
   }

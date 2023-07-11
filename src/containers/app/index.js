@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setTempTranscript, setFinalTranscript, setMicPermission, setRecordButtonState } from '../../redux/actions';
-import LanguageSelection from '../../components/languageSelection';
+import { setTempTranscript, setFinalTranscript, setMicPermission, setRecordButtonState, setCarouselState } from '../../redux/actions';
+//import LanguageSelection from '../../components/languageSelection';
+import ShaderArea from '../../components/shaderArea';
 import BotResponseArea from '../../components/botResponseArea';
 import Carousel from '../../components/carousel';
 import Footer from '../../components/footer';
@@ -19,10 +20,11 @@ const App = ({
     setTempTranscript, 
     setFinalTranscript, 
     setRecordButtonState,
+    setCarouselState
 }) => {
 
     return (
-        <div class="main-page">
+        <div className="main-page">
             <div //Bot Response Area
             style={{position: 'fixed', top: '10px', left: '50%', transform: 'translateX(-50%)'}} >
                 <Header />
@@ -31,7 +33,7 @@ const App = ({
             style={{position: 'fixed', top: '15%', left: '50%', transform: 'translateX(-50%)'}} >
                 <BotResponseArea />
             </div>            
-           
+           { /*Language Selection
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -48,6 +50,20 @@ const App = ({
                 }}>
                     <Carousel />
                 </div>
+            </div>
+            */ } 
+            <div //Shader Area
+            style={{position: 'fixed', bottom: '20%', top:'20%', left: '0%', right:'0%'}} >
+                <div style={{
+                    top: '20%',
+                    bottom: '20%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                   <ShaderArea/>
+                </div>
+                
             </div>
             <div //Speech Area
             style={{position: 'fixed', bottom: '25%', left: '50%', transform: 'translateX(-50%)'}} >
@@ -70,9 +86,8 @@ const App = ({
                 /> 
             </div>
             <div //Language Selection 
-            style={{position: 'fixed', bottom: '10px', left: '50%', transform: 'translateX(-50%)'}} >
-                <Footer />
-                <LanguageSelection />
+            style={{position: 'fixed', bottom: '0%', top:'90%', left: '0%', right:'0%'}} >
+                <Footer/>
             </div>
         </div>
     );
@@ -82,14 +97,16 @@ const mapStateToProps = state => ({
     tempTranscript: state.bot.tempTranscript,
     finalTranscript: state.bot.finalTranscript,
     micPermission: state.bot.micPermission,
-    recordButtonState: state.bot.recordButtonState
+    recordButtonState: state.bot.recordButtonState,
+    carouselState: state.bot.carouselState
 });
 
 const mapDispatchToProps = {
     setTempTranscript,
     setFinalTranscript,
     setMicPermission,
-    setRecordButtonState
+    setRecordButtonState,
+    setCarouselState
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

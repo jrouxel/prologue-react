@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 const Header = () => {
   return (
   <svg
-    class="logo"
+    className="logo"
     width="40"
     height="40"
     viewBox="0 0 40 40"

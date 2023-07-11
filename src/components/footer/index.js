@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 
 const Footer = () => {
   return (
-    <div>Footer Area</div>
+    <div //test
+    style={{position: 'center', right: '50%'}}>
+      Test
+    </div>
   )
 };
 
