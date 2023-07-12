@@ -1,46 +1,31 @@
 import React from "react";
-import { useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
 import { connect } from 'react-redux';
+import {useControls} from 'leva';
+import {Canvas} from '@react-three/fiber';
+import {OrbitControls, CameraShake} from '@react-three/drei';
+import { Particles } from './particles';
+import * as THREE from 'three';
+import './styles.css';
 
-function Box(props) {
-    // This reference gives us direct access to the THREE.Mesh object
-    const ref = useRef()
-    // Hold state for hovered and clicked events
-    const [hovered, hover] = useState(false)
-    const [clicked, click] = useState(false)
-    // Subscribe this component to the render-loop, rotate the mesh every frame
-    useFrame((state, delta) => (ref.current.rotation.x += delta))
-    // Return the view, these are regular Threejs elements expressed in JSX
-    return (
-      <mesh
-        {...props}
-        ref={ref}
-        scale={clicked ? 1.5 : 1}
-        onClick={(event) => click(!clicked)}
-        onPointerOver={(event) => (event.stopPropagation(), hover(true))}
-        onPointerOut={(event) => hover(false)}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-      </mesh>
-    )
-  }
-
-// Original component with redux template
 const ShaderArea = () => {
-    return (
-        <Canvas>
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-          <pointLight position={[-10, -10, -10]} />
-          <Box position={[-1.2, 0, 0]} />
-          <Box position={[1.2, 0, 0]} />
-          <OrbitControls />
-        </Canvas>
-      )
-};
+    const props = useControls({
+        focus: {value: 5.1, min: 3, max: 7, step: 0.01},
+        speed: {value: 100, min: 0.1, max: 100, step: 0.1},
+        aperture: {value: 1.8, min: 1, max: 5.6, step: 0.1},
+        fov: {value: 50, min: 0, max: 200},
+        curl: {value: 0.25, min: 0.01, max: 0.5, step: 0.01}
+    });
 
+    return (
+        <Canvas camera={{fov: 25, position: [0, 0, 6]}} linear={true}
+                gl={{camera: new THREE.WebGL1Renderer({antialias: true, alpha: true})}}>
+            <OrbitControls makeDefault autoRotate autoRotateSpeed={0.5} zoomSpeed={0.1}/>
+            <CameraShake yawFrequency={1} maxYaw={0.05} pitchFrequency={1} maxPitch={0.05} rollFrequency={0.5}
+                         maxRoll={0.5} intensity={0.2}/>
+            <Particles {...props} />
+        </Canvas>
+    );
+};
 // Here you could map state values to props if needed
 const mapStateToProps = ({ bot }) => ({
   // your state values here

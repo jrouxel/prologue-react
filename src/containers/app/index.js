@@ -25,7 +25,7 @@ const App = ({
 
     return (
         <div className="main-page">
-            <div //Bot Response Area
+            <div //Header Area
             style={{position: 'fixed', top: '10px', left: '50%', transform: 'translateX(-50%)'}} >
                 <Header />
             </div>     
@@ -33,8 +33,8 @@ const App = ({
             style={{position: 'fixed', top: '15%', left: '50%', transform: 'translateX(-50%)'}} >
                 <BotResponseArea />
             </div>            
-           { /*Language Selection
-            <div style={{
+            <div //Carousel Area
+            style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -51,7 +51,6 @@ const App = ({
                     <Carousel />
                 </div>
             </div>
-            */ } 
             <div //Shader Area
             style={{position: 'fixed', bottom: '20%', top:'20%', left: '0%', right:'0%'}} >
                 <div style={{
@@ -69,7 +68,7 @@ const App = ({
             style={{position: 'fixed', bottom: '25%', left: '50%', transform: 'translateX(-50%)'}} >
                 <SpeechArea />
             </div>
-            <div //Record button 
+            <div //Record Area
             style={{position: 'fixed', bottom: '10%', left: '50%', transform: 'translateX(-50%)'}} >
                 <RecordArea 
                         //anchor to the center bottom of the screen
@@ -85,7 +84,7 @@ const App = ({
                         recordButtonState={recordButtonState}
                 /> 
             </div>
-            <div //Language Selection 
+            <div //Footer Area
             style={{position: 'fixed', bottom: '0%', top:'90%', left: '0%', right:'0%'}} >
                 <Footer/>
             </div>
