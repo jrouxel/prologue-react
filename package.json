@@ -24,6 +24,7 @@
     "react-redux": "^8.1.1",
     "react-scripts": "^5.0.1",
     "redux": "^4.2.1",
+    "swiper": "^10.0.4",
     "three": "0.142.0",
     "v8": "0.1.0",
     "web-vitals": "^2.1.4"

@@ -24,6 +24,10 @@ const App = ({
 }) => {
 
     return (
+        
+        <ShaderArea
+        style={{position: 'fixed', bottom: '20%', top:'20%', left: '0%', right:'0%'}} />
+        /*
         <div className="main-page">
             <div //Header Area
             style={{position: 'fixed', top: '10px', left: '50%', transform: 'translateX(-50%)'}} >
@@ -89,6 +93,7 @@ const App = ({
                 <Footer/>
             </div>
         </div>
+        */
     );
 };
 

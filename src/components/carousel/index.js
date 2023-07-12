@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from 'swiper/core';
 import { SliderStates } from './constants.js';
 import { setCarouselState } from '../../redux/actions';
 import store from '../../redux/store';
-import "swiper/css";
-import "swiper/css/navigation";
 import './styles.css';
 
-SwiperCore.use([Navigation]);
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+
+import { Navigation } from 'swiper/modules';
 
 const Carousel = () => {
   const handleSlideChange = (swiper) => {
@@ -51,8 +54,9 @@ const Carousel = () => {
   };
 
   return (
-    <Swiper
-      navigation
+    <Swiper 
+      navigation={true} 
+      modules={[Navigation]}
       spaceBetween={50}
       slidesPerView={1}
       onSwiper={handleSlideChange}
