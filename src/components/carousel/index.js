@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from "swiper/core";
+import SwiperCore, { Navigation } from 'swiper/core';
 import { SliderStates } from './constants.js';
 import { setCarouselState } from '../../redux/actions';
 import store from '../../redux/store';
