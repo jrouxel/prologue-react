@@ -26,8 +26,12 @@ const App = ({
     return (
 
         <div className="main-page">
-        <div style={{position:'fixed' , width: '20%', height: '20%', right: '40%'}}>
-            <ShaderArea/>
+        <div //Shader Area
+        style={{display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center'}}>
+            <div 
+            style={{position:'relative', width: '400px', height: '200px'}}>
+                <ShaderArea/>
+            </div>
         </div>
         <div>  HELLO </div>
         </div>   
