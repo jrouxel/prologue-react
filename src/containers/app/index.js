@@ -29,7 +29,7 @@ const App = ({
         <div //Shader Area
         style={{display: 'flex', height: '100vh', width: '100vw', alignItems: 'center', justifyContent: 'center'}}>
             <div 
-            style={{position:'relative', width: '400px', height: '200px'}}>
+            style={{display:'flex', position:'relative', width: '400px', height: '200px'}}>
                 <ShaderArea/>
             </div>
         </div>
