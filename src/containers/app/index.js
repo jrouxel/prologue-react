@@ -24,76 +24,15 @@ const App = ({
 }) => {
 
     return (
-        
-        <ShaderArea
-        style={{position: 'fixed', bottom: '20%', top:'20%', left: '0%', right:'0%'}} />
-        /*
+
         <div className="main-page">
-            <div //Header Area
-            style={{position: 'fixed', top: '10px', left: '50%', transform: 'translateX(-50%)'}} >
-                <Header />
-            </div>     
-            <div //Bot Response Area
-            style={{position: 'fixed', top: '15%', left: '50%', transform: 'translateX(-50%)'}} >
-                <BotResponseArea />
-            </div>            
-            <div //Carousel Area
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh', // Adjust this value as required
-            }}>
-                <div style={{
-                    width: '300px',
-                    height: '150px',
-                    background: '#f9f9f9',  // or any color that you want for the background
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    <Carousel />
-                </div>
-            </div>
-            <div //Shader Area
-            style={{position: 'fixed', bottom: '20%', top:'20%', left: '0%', right:'0%'}} >
-                <div style={{
-                    top: '20%',
-                    bottom: '20%',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                   <ShaderArea/>
-                </div>
-                
-            </div>
-            <div //Speech Area
-            style={{position: 'fixed', bottom: '25%', left: '50%', transform: 'translateX(-50%)'}} >
-                <SpeechArea />
-            </div>
-            <div //Record Area
-            style={{position: 'fixed', bottom: '10%', left: '50%', transform: 'translateX(-50%)'}} >
-                <RecordArea 
-                        //anchor to the center bottom of the screen
-                        micPermission={micPermission}
-                        onStart={() => startSpeechRecognition()(store.dispatch, store.getState)}
-                        onStop={() => stopSpeechRecognition(setRecordButtonState)}
-                        onCancel={() => {
-                            setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
-                            setFinalTranscript('');
-                            setTempTranscript('');
-                            cancelSpeechRecognition();
-                        }}
-                        recordButtonState={recordButtonState}
-                /> 
-            </div>
-            <div //Footer Area
-            style={{position: 'fixed', bottom: '0%', top:'90%', left: '0%', right:'0%'}} >
-                <Footer/>
-            </div>
+        <div style={{position:'fixed' , width: '20%', height: '20%', right: '40%'}}>
+            <ShaderArea/>
         </div>
-        */
+        <div>  HELLO </div>
+        </div>   
+        //this doesn't work
+
     );
 };
 

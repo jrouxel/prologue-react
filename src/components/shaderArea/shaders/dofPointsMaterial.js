@@ -23,7 +23,7 @@ class DofPointsMaterial extends THREE.ShaderMaterial {
         vec2 cxy = 2.0 * gl_PointCoord - 1.0;
         if (dot(cxy, cxy) > 1.0) discard;
         //gl_FragColor = vec4(vec3(1.0, 0.0, 0.0), (1.04 - clamp(vDistance * 1.5, 0.0, 1.0)));
-        gl_FragColor = vec4(vec3(0.0, 1.0, 0.0), (1.04 - clamp(vDistance * 1.5, 0.0, 1.0)));
+        gl_FragColor = vec4(vec3(0.7490196078431373, 0.35294117647058826, 0.9490196078431372), (1.04 - clamp(vDistance * 1.5, 0.0, 1.0)));
       }`,
       uniforms: {
         positions: { value: null },

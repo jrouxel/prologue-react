@@ -9,11 +9,11 @@ import './styles.css';
 
 const ShaderArea = () => {
   const props = useControls({
-    focus: {value: 5.1, min: 3, max: 7, step: 0.01},
-    speed: {value: 100, min: 0.1, max: 100, step: 0.1},
-    aperture: {value: 1.8, min: 1, max: 5.6, step: 0.1},
-    fov: {value: 50, min: 0, max: 200},
-    curl: {value: 0.25, min: 0.01, max: 0.5, step: 0.01}
+    focus: {value: 6.49, min: 3, max: 7, step: 0.01},
+    speed: {value: 11.8, min: 0.1, max: 100, step: 0.1},
+    aperture: {value: 3.6, min: 1, max: 5.6, step: 0.1},
+    fov: {value: 184, min: 0, max: 200},
+    curl: {value: 0.5, min: 0.01, max: 0.5, step: 0.01}
   });
 
   return (
