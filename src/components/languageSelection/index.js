@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { slide as Menu } from 'react-burger-menu'
 
 const LanguageSelection = () => {
   return (
-    <div>Select Language:</div>
+    <Menu right>
+        <div>Select Language:</div>
+    </Menu>
   )
 };
 
