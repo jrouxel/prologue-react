@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE, SET_CAROUSEL_STATE, SET_LANGUAGE_BUTTON_SELECTED} from '../actions';
+import { SET_TEMP_TRANSCRIPT, SET_FINAL_TRANSCRIPT, SET_MIC_PERMISSION, SET_RECORD_BUTTON_STATE, SET_CAROUSEL_STATE, SHOW_LANGUAGE_PANEL} from '../actions';
 
 const INITIAL_STATE = {
   tempTranscript: '',
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   micPermission: false,
   recordButtonState: 'Mic Permission Required', // added initial state
   carouselState: 0,
-  languageButtonSelected: false,
+  languagePanelOpen: false,
 };
 
 const botReducer = (state = INITIAL_STATE, action) => {
@@ -22,8 +22,8 @@ const botReducer = (state = INITIAL_STATE, action) => {
       return {...state, recordButtonState: action.payload}
     case SET_CAROUSEL_STATE:
       return {...state, carouselState: action.payload}
-    case SET_LANGUAGE_BUTTON_SELECTED:
-      return {...state, languageButtonSelected: action.payload}
+    case SHOW_LANGUAGE_PANEL:
+      return {...state, languagePanelOpen: action.payload}
     default:
       return state;
   }

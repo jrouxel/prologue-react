@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setTempTranscript, setFinalTranscript, setMicPermission, setRecordButtonState, setCarouselState, setLanguageButtonSelected } from '../../redux/actions';
+import { setTempTranscript, setFinalTranscript, setMicPermission, setRecordButtonState, setCarouselState} from '../../redux/actions';
 import LanguageSelection from '../../components/languageSelection';
 import ShaderArea from '../../components/shaderArea';
 import BotResponseArea from '../../components/botResponseArea';
@@ -20,8 +20,6 @@ const App = ({
     setTempTranscript, 
     setFinalTranscript, 
     setRecordButtonState,
-    setCarouselState,
-    setLanguageButtonSelected
 }) => {
 
     return (
@@ -62,17 +60,15 @@ const App = ({
                         recordButtonState={recordButtonState}
                 /> 
             </div>
-            <div //Language Selection Area
-            >
-                <LanguageSelection />
-            </div>
             <div //Footer Area
             style={{position: 'fixed', bottom: '0', left: '0', height: '6vh', width: '100vw'}} >
                 <Footer/>
             </div>
+            
         </div>   
         //this doesn't work
         /*
+        <LanguageSelection />
         <div className="main-page">          
             <div //Carousel Area
             style={{
@@ -92,25 +88,9 @@ const App = ({
                     <Carousel />
                 </div>
             </div>
-            <div //Record Area
-            style={{position: 'fixed', bottom: '10%', left: '50%', transform: 'translateX(-50%)'}} >
-                <RecordArea 
-                        //anchor to the center bottom of the screen
-                        micPermission={micPermission}
-                        onStart={() => startSpeechRecognition()(store.dispatch, store.getState)}
-                        onStop={() => stopSpeechRecognition(setRecordButtonState)}
-                        onCancel={() => {
-                            setRecordButtonState(RecordButtonStates.READY_TO_RECORD);
-                            setFinalTranscript('');
-                            setTempTranscript('');
-                            cancelSpeechRecognition();
-                        }}
-                        recordButtonState={recordButtonState}
-                /> 
-            </div>
-            <div //Footer Area
-            style={{position: 'fixed', bottom: '0%', top:'90%', left: '0%', right:'0%'}} >
-                <Footer/>
+            <div //Language Selection Area
+            >
+                <LanguageSelection />
             </div>
         </div>
         */

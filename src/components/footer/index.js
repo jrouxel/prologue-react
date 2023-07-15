@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import conversationHistory from './img/conversationHistory.png'
 import languageSelection from './img/languageSelection.png'
+import { showLanguagePanel } from '../../redux/actions';
+import store from '../../redux/store';
 import menu from './img/menu.png'
 import { buttonStyles, pressedButtonStyles } from './styles.js';
 
@@ -16,6 +18,11 @@ const Footer = () => {
         style={menuButtonPressed ? pressedButtonStyles : buttonStyles} 
         onMouseDown={() => setMenuButtonPressed(true)}
         onMouseUp={() => setMenuButtonPressed(false)}
+        onClick={() => {
+          console.log(store.getState().bot.languagePanelOpen);
+          store.dispatch(showLanguagePanel(true));
+          console.log(store.getState().bot.languagePanelOpen);
+        }}
       >
         <img 
         src={menu} 

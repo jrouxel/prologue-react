@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { SliderStates } from './constants.js';
 import { setCarouselState } from '../../redux/actions';
@@ -50,7 +50,6 @@ const Carousel = () => {
         store.dispatch(setCarouselState(SliderStates.BOT_1));
         break;
     }
-    console.log(store.getState().bot.carouselState);
   };
 
   return (

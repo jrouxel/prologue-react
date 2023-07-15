@@ -4,7 +4,7 @@ export const SET_FINAL_TRANSCRIPT = 'SET_FINAL_TRANSCRIPT';
 export const SET_MIC_PERMISSION = 'SET_MIC_PERMISSION';
 export const SET_RECORD_BUTTON_STATE = 'SET_RECORD_BUTTON_STATE';
 export const SET_CAROUSEL_STATE = 'SET_CAROUSEL_STATE';
-export const SET_LANGUAGE_BUTTON_SELECTED = 'SET_LANGUAGE_BUTTON_SELECTED';
+export const SHOW_LANGUAGE_PANEL = 'SHOW_LANGUAGE_PANEL';
 
 // Define actions
 export const setTempTranscript = (transcript) => {
@@ -42,9 +42,9 @@ export const setCarouselState = (state) => {
   }
 }
 
-export const setLanguageButtonSelected = (state) => {
+export const showLanguagePanel = (state) => {
   return {
-    type: SET_LANGUAGE_BUTTON_SELECTED,
+    type: SHOW_LANGUAGE_PANEL,
     payload: state
   }
 }
